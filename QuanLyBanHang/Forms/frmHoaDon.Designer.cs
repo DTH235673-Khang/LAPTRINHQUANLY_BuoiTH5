@@ -54,9 +54,11 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(dataGridView);
-            groupBox1.Location = new Point(6, 8);
+            groupBox1.Location = new Point(7, 11);
+            groupBox1.Margin = new Padding(3, 4, 3, 4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(972, 234);
+            groupBox1.Padding = new Padding(3, 4, 3, 4);
+            groupBox1.Size = new Size(1111, 312);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Danh sách hóa đơn";
@@ -69,28 +71,33 @@
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { ID, HoVaTenNhanVien, HoVaTenKhachHang, NgayLap, TongTienHoaDon, XemChiTiet });
             dataGridView.Dock = DockStyle.Fill;
-            dataGridView.Location = new Point(3, 19);
+            dataGridView.Location = new Point(3, 24);
+            dataGridView.Margin = new Padding(3, 4, 3, 4);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
-            dataGridView.Size = new Size(966, 212);
+            dataGridView.RowHeadersWidth = 51;
+            dataGridView.Size = new Size(1105, 284);
             dataGridView.TabIndex = 0;
             // 
             // ID
             // 
             ID.DataPropertyName = "ID";
             ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
             ID.Name = "ID";
             // 
             // HoVaTenNhanVien
             // 
             HoVaTenNhanVien.DataPropertyName = "HoVaTenNhanVien";
             HoVaTenNhanVien.HeaderText = "Nhân Viên";
+            HoVaTenNhanVien.MinimumWidth = 6;
             HoVaTenNhanVien.Name = "HoVaTenNhanVien";
             // 
             // HoVaTenKhachHang
             // 
             HoVaTenKhachHang.DataPropertyName = "HoVaTenKhachHang";
             HoVaTenKhachHang.HeaderText = "Khách Hàng";
+            HoVaTenKhachHang.MinimumWidth = 6;
             HoVaTenKhachHang.Name = "HoVaTenKhachHang";
             // 
             // NgayLap
@@ -100,6 +107,7 @@
             dataGridViewCellStyle1.Format = "dd/MM/yyyy";
             NgayLap.DefaultCellStyle = dataGridViewCellStyle1;
             NgayLap.HeaderText = "Ngày Lập";
+            NgayLap.MinimumWidth = 6;
             NgayLap.Name = "NgayLap";
             // 
             // TongTienHoaDon
@@ -110,6 +118,7 @@
             dataGridViewCellStyle2.Format = "N2";
             TongTienHoaDon.DefaultCellStyle = dataGridViewCellStyle2;
             TongTienHoaDon.HeaderText = "Tổng Tiền";
+            TongTienHoaDon.MinimumWidth = 6;
             TongTienHoaDon.Name = "TongTienHoaDon";
             // 
             // XemChiTiet
@@ -118,15 +127,17 @@
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             XemChiTiet.DefaultCellStyle = dataGridViewCellStyle3;
             XemChiTiet.HeaderText = "Chi Tiết";
+            XemChiTiet.MinimumWidth = 6;
             XemChiTiet.Name = "XemChiTiet";
             // 
             // btnLapHoaDon
             // 
             btnLapHoaDon.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLapHoaDon.ForeColor = Color.Blue;
-            btnLapHoaDon.Location = new Point(76, 258);
+            btnLapHoaDon.Location = new Point(87, 344);
+            btnLapHoaDon.Margin = new Padding(3, 4, 3, 4);
             btnLapHoaDon.Name = "btnLapHoaDon";
-            btnLapHoaDon.Size = new Size(148, 28);
+            btnLapHoaDon.Size = new Size(169, 37);
             btnLapHoaDon.TabIndex = 1;
             btnLapHoaDon.Text = "Lập hóa đơn mới...";
             btnLapHoaDon.UseVisualStyleBackColor = true;
@@ -136,9 +147,10 @@
             // 
             btnInHoaDon.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnInHoaDon.ForeColor = Color.Black;
-            btnInHoaDon.Location = new Point(230, 258);
+            btnInHoaDon.Location = new Point(263, 344);
+            btnInHoaDon.Margin = new Padding(3, 4, 3, 4);
             btnInHoaDon.Name = "btnInHoaDon";
-            btnInHoaDon.Size = new Size(107, 28);
+            btnInHoaDon.Size = new Size(122, 37);
             btnInHoaDon.TabIndex = 2;
             btnInHoaDon.Text = "In hóa đơn...";
             btnInHoaDon.UseVisualStyleBackColor = true;
@@ -147,9 +159,10 @@
             // 
             btnSua.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnSua.ForeColor = Color.Black;
-            btnSua.Location = new Point(343, 258);
+            btnSua.Location = new Point(392, 344);
+            btnSua.Margin = new Padding(3, 4, 3, 4);
             btnSua.Name = "btnSua";
-            btnSua.Size = new Size(72, 28);
+            btnSua.Size = new Size(82, 37);
             btnSua.TabIndex = 3;
             btnSua.Text = "Sửa...";
             btnSua.UseVisualStyleBackColor = true;
@@ -159,9 +172,10 @@
             // 
             btnXoa.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnXoa.ForeColor = Color.Red;
-            btnXoa.Location = new Point(421, 258);
+            btnXoa.Location = new Point(481, 344);
+            btnXoa.Margin = new Padding(3, 4, 3, 4);
             btnXoa.Name = "btnXoa";
-            btnXoa.Size = new Size(65, 28);
+            btnXoa.Size = new Size(74, 37);
             btnXoa.TabIndex = 4;
             btnXoa.Text = "Xóa";
             btnXoa.UseVisualStyleBackColor = true;
@@ -171,9 +185,10 @@
             // 
             btnThoat.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnThoat.ForeColor = Color.Black;
-            btnThoat.Location = new Point(492, 258);
+            btnThoat.Location = new Point(562, 344);
+            btnThoat.Margin = new Padding(3, 4, 3, 4);
             btnThoat.Name = "btnThoat";
-            btnThoat.Size = new Size(72, 28);
+            btnThoat.Size = new Size(82, 37);
             btnThoat.TabIndex = 5;
             btnThoat.Text = "Thoát";
             btnThoat.UseVisualStyleBackColor = true;
@@ -183,9 +198,10 @@
             // 
             btnTimKiem.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnTimKiem.ForeColor = Color.Black;
-            btnTimKiem.Location = new Point(570, 258);
+            btnTimKiem.Location = new Point(651, 344);
+            btnTimKiem.Margin = new Padding(3, 4, 3, 4);
             btnTimKiem.Name = "btnTimKiem";
-            btnTimKiem.Size = new Size(106, 28);
+            btnTimKiem.Size = new Size(121, 37);
             btnTimKiem.TabIndex = 6;
             btnTimKiem.Text = "Tìm kiếm...";
             btnTimKiem.UseVisualStyleBackColor = true;
@@ -194,20 +210,23 @@
             // 
             btnXuat.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnXuat.ForeColor = Color.Black;
-            btnXuat.Location = new Point(682, 258);
+            btnXuat.Location = new Point(779, 344);
+            btnXuat.Margin = new Padding(3, 4, 3, 4);
             btnXuat.Name = "btnXuat";
-            btnXuat.Size = new Size(117, 28);
+            btnXuat.Size = new Size(134, 37);
             btnXuat.TabIndex = 7;
             btnXuat.Text = "Xuất Excel...";
             btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnNhap
             // 
             btnNhap.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnNhap.ForeColor = Color.Black;
-            btnNhap.Location = new Point(805, 258);
+            btnNhap.Location = new Point(920, 344);
+            btnNhap.Margin = new Padding(3, 4, 3, 4);
             btnNhap.Name = "btnNhap";
-            btnNhap.Size = new Size(117, 28);
+            btnNhap.Size = new Size(134, 37);
             btnNhap.TabIndex = 8;
             btnNhap.Text = "Nhập";
             btnNhap.UseVisualStyleBackColor = true;
@@ -215,9 +234,9 @@
             // 
             // frmHoaDon
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(990, 307);
+            ClientSize = new Size(1131, 409);
             Controls.Add(btnNhap);
             Controls.Add(btnXuat);
             Controls.Add(btnTimKiem);
@@ -227,6 +246,7 @@
             Controls.Add(btnInHoaDon);
             Controls.Add(btnLapHoaDon);
             Controls.Add(groupBox1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "frmHoaDon";
             Text = "Hóa Đơn";
             Load += frmHoaDon_Load;

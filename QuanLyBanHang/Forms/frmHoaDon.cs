@@ -90,65 +90,169 @@ namespace QuanLyBanHang.Forms
             this.Close();
         }
 
+
         private void btnNhap_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Nhập dữ liệu từ tập tin Excel";
             openFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
             openFileDialog.Multiselect = false;
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    DataTable table = new DataTable();
                     using (XLWorkbook workbook = new XLWorkbook(openFileDialog.FileName))
                     {
-                        IXLWorksheet worksheet1 = workbook.Worksheet(1);
-                        IXLWorksheet worksheet2 = workbook.Worksheet(1);
-                        bool firstRow = true;
-                        string readRange = "1:1";
+                        DataTable table1 = new DataTable();
+                        IXLWorksheet worksheet1 = workbook.Worksheet(1); // Lấy sheet 1
+                        bool firstRow1 = true;
                         foreach (IXLRow row in worksheet1.RowsUsed())
                         {
-                            // Đọc dòng tiêu đề (dòng đầu tiên)
-                            if (firstRow)
+                            if (firstRow1)
                             {
-                                readRange = string.Format("{0}:{1}", 1, row.LastCellUsed().Address.ColumnNumber);
-                                foreach (IXLCell cell in row.Cells(readRange))
-                                    table.Columns.Add(cell.Value.ToString());
-                                firstRow = false;
+                                foreach (IXLCell cell in row.CellsUsed()) table1.Columns.Add(cell.Value.ToString());
+                                firstRow1 = false;
                             }
-                            else // Đọc các dòng nội dung (các dòng tiếp theo)
+                            else
                             {
-                                table.Rows.Add();
-                                int cellIndex = 0;
-                                foreach (IXLCell cell in row.Cells(readRange))
+                                table1.Rows.Add(row.Cells(1, table1.Columns.Count).Select(c => c.Value.ToString()).ToArray());
+                            }
+                        }
+
+                        if (table1.Rows.Count > 0)
+                        {
+                            foreach (DataRow r in table1.Rows)
+                            {
+                                var nv = context.NhanVien.FirstOrDefault(x => x.HoVaTen == r["NhanVien"].ToString());
+                                var kh = context.KhachHang.FirstOrDefault(x => x.HoVaTen == r["KhachHang"].ToString());
+
+                                if (nv != null && kh != null)
                                 {
-                                    table.Rows[table.Rows.Count - 1][cellIndex] = cell.Value.ToString();
-                                    cellIndex++;
+                                    HoaDon hd = new HoaDon();
+                                    hd.NhanVienID = nv.ID;
+                                    hd.KhachHangID = kh.ID;
+                                    hd.NgayLap = Convert.ToDateTime(r["NgayLap"]);
+                                    hd.GhiChuHoaDon = r["GhiChuHoaDon"].ToString();
+                                    hd.TongTienHoaDon = Convert.ToDouble(r["TongTienHoaDon"]);
+                                    context.HoaDon.Add(hd);
                                 }
                             }
+                            context.SaveChanges(); // Lưu hóa đơn trước để có ID
                         }
-                        if (table.Rows.Count > 0)
+
+                        DataTable table2 = new DataTable();
+                        IXLWorksheet worksheet2 = workbook.Worksheet(2); // Lấy sheet 2
+                        bool firstRow2 = true;
+                        foreach (IXLRow row in worksheet2.RowsUsed())
                         {
-                            foreach (DataRow r in table.Rows)
+                            if (firstRow2)
                             {
-                                string nv = r["NhanVien"].ToString();
-                                string kh = r["KhachHang"].ToString();
-                                var manv = context.NhanVien.FirstOrDefault(r => r.HoVaTen == nv);
-                                var makh=context.KhachHang.FirstOrDefault(r=>r.HoVaTen == kh);
-                                HoaDon hd = new HoaDon();
-                                hd.NhanVienID = manv.ID;
-                                hd.KhachHangID = makh.ID;
-                                hd.NgayLap =(DateTime)r["NgayLap"];
-                                hd.GhiChuHoaDon = r["GhiChuHoaDon"].ToString();
-                                context.HoaDon.Add(hd);
+                                foreach (IXLCell cell in row.CellsUsed()) table2.Columns.Add(cell.Value.ToString());
+                                firstRow2 = false;
+                            }
+                            else
+                            {
+                                table2.Rows.Add(row.Cells(1, table2.Columns.Count).Select(c => c.Value.ToString()).ToArray());
+                            }
+                        }
+
+                        if (table2.Rows.Count > 0)
+                        {
+                            foreach (DataRow r2 in table2.Rows) // Chạy vòng lặp riêng cho bảng 2
+                            {
+                                string tenSP = r2["SanPham"].ToString();
+                                var sp = context.SanPham.FirstOrDefault(x => x.TenSanPham == tenSP);
+
+                                if (sp != null)
+                                {
+                                    HoaDonChiTiet ct = new HoaDonChiTiet();
+                                    ct.HoaDonID = Convert.ToInt32(r2["ID"]); // Cột liên kết trong Excel
+                                    ct.SanPhamID = sp.ID;
+                                    ct.SoLuongBan = Convert.ToInt32(r2["SoLuong"]);
+                                    ct.DonGiaBan = Convert.ToInt32(r2["DonGia"]);
+                                    context.HoaDonChiTiet.Add(ct);
+                                }
                             }
                             context.SaveChanges();
-                            MessageBox.Show("Đã nhập thành công " + table.Rows.Count + " dòng.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            frmHoaDon_Load(sender, e);
                         }
-                        if (firstRow)
-                            MessageBox.Show("Tập tin Excel rỗng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                        MessageBox.Show("Đã nhập thành công " + table1.Rows.Count + " hóa đơn và " + table2.Rows.Count + " chi tiết.", "Thành công");
+                        frmHoaDon_Load(sender, e);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Thông báo lỗi");
+                }
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Xuất dữ liệu ra tập tin Excel";
+            saveFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+            saveFileDialog.FileName = "BaoCaoHoaDon_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".xlsx";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // --- XỬ LÝ TABLE 1: HÓA ĐƠN ---
+                    DataTable tableHD = new DataTable();
+                    tableHD.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("NhanVien", typeof(string)),
+                new DataColumn("KhachHang", typeof(string)),
+                new DataColumn("NgayLap", typeof(DateTime)),
+                new DataColumn("GhiChuHoaDon", typeof(string)),
+                new DataColumn("TongTienHoaDon",typeof(double))
+            });
+
+                    var dsHoaDon = context.HoaDon.ToList();
+                    if (dsHoaDon != null)
+                    {
+                        foreach (var p in dsHoaDon)
+                        {
+                            var nv = context.NhanVien.FirstOrDefault(r => r.ID == p.NhanVienID);
+                            var kh=context.KhachHang.FirstOrDefault(r => r.ID==p.KhachHangID);
+                            tableHD.Rows.Add(p.ID,nv.HoVaTen, kh.HoVaTen, p.NgayLap, p.GhiChuHoaDon,p.TongTienHoaDon);
+                        }
+                    }
+
+                    // --- XỬ LÝ TABLE 2: CHI TIẾT HÓA ĐƠN ---
+                    DataTable tableCT = new DataTable();
+                    tableCT.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("SanPham", typeof(string)),
+                new DataColumn("SoLuong", typeof(int)),
+                new DataColumn("DonGia", typeof(int))
+            });
+
+                    var dsChiTiet = context.HoaDonChiTiet.ToList();
+                    if (dsChiTiet != null)
+                    {
+                        foreach (var d in dsChiTiet)
+                        {
+                            var sp = context.SanPham.FirstOrDefault(r => r.ID == d.SanPhamID);
+                            tableCT.Rows.Add(d.HoaDonID, sp.TenSanPham, d.SoLuongBan, d.DonGiaBan);
+                        }
+                    }
+
+                    // --- XUẤT RA FILE EXCEL ---
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        // Thêm Sheet 1 từ tableHD
+                        var sheet1 = wb.Worksheets.Add(tableHD, "HoaDon");
+                        sheet1.Columns().AdjustToContents();
+
+                        // Thêm Sheet 2 từ tableCT
+                        var sheet2 = wb.Worksheets.Add(tableCT, "HoaDonChiTiet");
+                        sheet2.Columns().AdjustToContents();
+
+                        wb.SaveAs(saveFileDialog.FileName);
+                        MessageBox.Show("Đã xuất dữ liệu ra 2 Sheet thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
@@ -158,4 +262,5 @@ namespace QuanLyBanHang.Forms
             }
         }
     }
-}
+    }
+

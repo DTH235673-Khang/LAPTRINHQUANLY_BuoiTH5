@@ -110,7 +110,8 @@ namespace QuanLyBanHang.Migrations
                     NhanVienID = table.Column<int>(type: "int", nullable: false),
                     KhachHangID = table.Column<int>(type: "int", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GhiChuHoaDon = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    GhiChuHoaDon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TongTienHoaDon = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {

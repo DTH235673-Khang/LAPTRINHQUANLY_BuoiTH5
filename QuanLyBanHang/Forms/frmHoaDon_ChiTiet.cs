@@ -156,6 +156,7 @@ namespace QuanLyBanHang.Forms
                         var old = context.HoaDonChiTiet.Where(r => r.HoaDonID == id).ToList();
                         context.HoaDonChiTiet.RemoveRange(old);
                         // Thêm lại chi tiết mới
+                        double total = 0;
                         foreach (var item in hoaDonChiTiet.ToList())
                         {
                             HoaDonChiTiet ct = new HoaDonChiTiet();
@@ -163,8 +164,11 @@ namespace QuanLyBanHang.Forms
                             ct.SanPhamID = item.SanPhamID;
                             ct.SoLuongBan = item.SoLuongBan;
                             ct.DonGiaBan = item.DonGiaBan;
+                            total += ct.SoLuongBan * ct.DonGiaBan;
                             context.HoaDonChiTiet.Add(ct);
+
                         }
+                        hd.TongTienHoaDon=total;
                         context.SaveChanges();
                     }
                 }
@@ -178,6 +182,7 @@ namespace QuanLyBanHang.Forms
                     context.HoaDon.Add(hd);
                     context.SaveChanges();
                     // Thêm chi tiết
+                    double total = 0;
                     foreach (var item in hoaDonChiTiet.ToList())
                     {
                         HoaDonChiTiet ct = new HoaDonChiTiet();
@@ -185,8 +190,10 @@ namespace QuanLyBanHang.Forms
                         ct.SanPhamID = item.SanPhamID;
                         ct.SoLuongBan = item.SoLuongBan;
                         ct.DonGiaBan = item.DonGiaBan;
+                        total += ct.DonGiaBan*ct.SoLuongBan;
                         context.HoaDonChiTiet.Add(ct);
                     }
+                    hd.TongTienHoaDon=total;
                     context.SaveChanges();
                 }
                 

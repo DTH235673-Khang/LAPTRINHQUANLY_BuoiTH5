@@ -59,6 +59,9 @@ namespace QuanLyBanHang.Migrations
                     b.Property<int>("NhanVienID")
                         .HasColumnType("int");
 
+                    b.Property<double?>("TongTienHoaDon")
+                        .HasColumnType("float");
+
                     b.HasKey("ID");
 
                     b.HasIndex("KhachHangID");
