@@ -35,7 +35,7 @@ namespace QuanLyBanHang.Forms
                 HoVaTenKhachHang = r.KhachHang.HoVaTen,
                 NgayLap = r.NgayLap,
                 GhiChuHoaDon = r.GhiChuHoaDon,
-                TongTienHoaDon = r.HoaDonChiTiet.Sum(r => r.SoLuongBan * r.DonGiaBan),
+                TongTienHoaDon = r.TongTienHoaDon,
                 XemChiTiet = "Xem chi tiết"
             }).ToList();
             dataGridView.DataSource = hd;
